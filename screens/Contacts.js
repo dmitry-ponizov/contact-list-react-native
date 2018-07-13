@@ -7,7 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import ContactListItem from './components/ContactListItem';
+import ContactListItem from '../components/ContactListItem';
 import { fetchContacts } from '../utils/api';
 const keyExtractor = ({ phone }) => phone;
 
@@ -16,7 +16,7 @@ export default class Contacts extends React.Component {
   static navigationOptions = {
     title: 'Contacts'
   }
-  
+
   state = {
     contacts: [],
     loading: true,
