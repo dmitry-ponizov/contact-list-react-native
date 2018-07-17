@@ -1,19 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-
+import { MaterialIcons } from '@expo/vector-icons'
 import ContactThumbnail from '../components/ContactThumbnail';
-
+import store from '../store';
 import colors from '../utils/colors';
 import { fetchUserContact } from '../utils/api';
 
 export default class User extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation: { navigate } }) => ({
     title: 'Me',
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: colors.blue,
     },
-  };
+
+    headerRight: (
+      <MaterialIcons
+        name="settings"
+        size={24}
+        style={{ color: 'white', marginRight: 10 }}
+        onPress={() => navigate('Options')}
+      />
+    ),
+  });
 
   state = {
     user: [],
@@ -22,24 +31,24 @@ export default class User extends React.Component {
   };
 
   async componentDidMount() {
-    try {
-      const user = await fetchUserContact();
+    this.unsubscribe = store.onChange(() =>
+      this.setState({
+        user: store.getState().user,
+        loading: store.getState().isFetchingUser,
+        error: store.getState().error,
+      }));
 
-      this.setState({
-        user,
-        loading: false,
-        error: false,
-      });
-    } catch (e) {
-      this.setState({
-        loading: false,
-        error: true,
-      });
-    }
+    const user = await fetchUserContact();
+
+    store.setState({ user, isFetchingUser: false });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {
-    const { loading, user, error } = this.state;
+    const { user, loading, error } = this.state;
     const { avatar, name, phone } = user;
 
     return (

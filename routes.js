@@ -1,17 +1,18 @@
-import React from 'react'
+import React from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons';
+
+import Favorites from './screens/Favorites';
 import Contacts from './screens/Contacts';
 import Profile from './screens/Profile';
-import Favorites from './screens/Favorites';
-import User from './screens/User'
-import colors from './utils/colors'
+import User from './screens/User';
+import Options from './screens/Options';
 
-const getTabBarIcon = icon => ({
-  tintColor
-}) => (
+import colors from './utils/colors';
+
+const getTabBarIcon = icon => ({ tintColor }) => (
   <MaterialIcons name={icon} size={26} style={{ color: tintColor }} />
-)
+);
 
 const ContactsScreens = StackNavigator(
   {
@@ -25,41 +26,45 @@ const ContactsScreens = StackNavigator(
   {
     initialRouteName: 'Contacts',
     navigationOptions: {
-      tabBarIcon: getTabBarIcon('list')
-    }
-  }
-)
-
-const UserScreens = StackNavigator(
-  {
-    User: {
-      screen: User
-    }
+      tabBarIcon: getTabBarIcon('list'),
+    },
   },
-  {
-    initialRouteName: 'User',
-    navigationOptions: {
-      tabBarIcon: getTabBarIcon('person')
-    }
-  }
-)
+);
 
 const FavoritesScreens = StackNavigator(
   {
     Favorites: {
-      screen: Favorites
+      screen: Favorites,
     },
     Profile: {
-      screen: Profile
-    }
+      screen: Profile,
+    },
   },
   {
     initialRouteName: 'Favorites',
     navigationOptions: {
-      tabBarIcon: getTabBarIcon('star')
-    }
-  }
-)
+      tabBarIcon: getTabBarIcon('star'),
+    },
+  },
+);
+
+const UserScreens = StackNavigator(
+  {
+    User: {
+      screen: User,
+    },
+    Options: {
+      screen: Options,
+    },
+  },
+  {
+    mode: 'modal',
+    initialRouteName: 'User',
+    navigationOptions: {
+      tabBarIcon: getTabBarIcon('person'),
+    },
+  },
+);
 
 export default TabNavigator(
   {
@@ -78,13 +83,13 @@ export default TabNavigator(
     tabBarPosition: 'bottom',
     tabBarOptions: {
       style: {
-        backgroundColor: colors.greyLight
+        backgroundColor: colors.greyLight,
       },
       showLabel: false,
       showIcon: true,
       activeTintColor: colors.blue,
       inactiveTintColor: colors.greyDark,
-      renderIndicator: () => null
+      renderIndicator: () => null,
     },
-}
-)
+  },
+);
